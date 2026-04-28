@@ -5,11 +5,11 @@ Shared BOOONG design tokens, base styles, and legacy-compatible UI components.
 ## Install
 
 ```bash
-npm install @booong/design-system
+npm install @yadoran-2025/booong-design-system
 ```
 
 ```js
-import "@booong/design-system/dist/booong.css";
+import "@yadoran-2025/booong-design-system/dist/booong.css";
 ```
 
 For static HTML projects, use the versioned GitHub Pages CSS after publishing:

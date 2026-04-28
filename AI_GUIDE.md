@@ -21,6 +21,6 @@ Use this guide when an AI assistant works on a BOOONG-based project.
 ## npm Usage
 
 ```js
-import "@booong/design-system/dist/booong.css";
+import "@yadoran-2025/booong-design-system/dist/booong.css";
 import "./project.css";
 ```
