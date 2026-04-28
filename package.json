@@ -1,6 +1,6 @@
 ﻿{
   "name": "@yadoran-2025/booong-design-system",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "BOOONG shared design tokens, base styles, and legacy-compatible UI components.",
   "license": "UNLICENSED",
   "private": false,
@@ -21,3 +21,4 @@
     "prepublishOnly": "npm run build"
   }
 }
+
