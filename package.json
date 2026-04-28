@@ -1,0 +1,23 @@
+﻿{
+  "name": "@booong/design-system",
+  "version": "1.0.0",
+  "description": "BOOONG shared design tokens, base styles, and legacy-compatible UI components.",
+  "license": "UNLICENSED",
+  "private": false,
+  "style": "dist/booong.css",
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "AI_GUIDE.md"
+  ],
+  "exports": {
+    "./dist/booong.css": "./dist/booong.css",
+    "./src/base.css": "./src/base.css",
+    "./src/components.css": "./src/components.css"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "prepublishOnly": "npm run build"
+  }
+}
