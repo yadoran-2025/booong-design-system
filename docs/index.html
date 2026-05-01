@@ -1,341 +1,1024 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BOOONG Design System Portal</title>
-  <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="releases/v1.0.1/booong.css">
-  <style>
-    :root {
-      --ds-bg: #f8fafc;
-      --ds-card-bg: #ffffff;
-      --ds-border: #e2e8f0;
-      --ds-text: #1e293b;
-      --ds-brand: #1B6BFF;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BOOONG Design System v2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gowun+Batang:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      background: var(--ds-bg);
-      color: var(--ds-text);
-      font-family: var(--font-sans);
-      margin: 0;
-      padding: 0;
-      line-height: 1.5;
-    }
+/* ── Tokens (inline subset) ── */
+:root {
+  --brand: #1B6BFF; --brand-deep: #0F4FCC; --brand-soft: #E6EEFF; --brand-ink: #0A2E7A;
+  --text: #111418; --muted: #5A6372; --faint: #9AA3B2;
+  --bg: #FFFFFF; --bg-soft: #F4F6FA; --bg-sidebar: #F7F9FC;
+  --border: #E3E7EE; --border-strong: #CFD6E2;
+  --radius: 8px; --radius-lg: 12px;
+  --shadow-sm: 0 1px 3px rgba(17,20,24,0.05);
+  --shadow-md: 0 4px 20px rgba(17,20,24,0.07);
+  --shadow-lg: 0 10px 32px rgba(17,20,24,0.10);
+  --ease: cubic-bezier(0.23,1,0.32,1);
+  --green: #2E7D4F; --green-bg: #EAF5EE;
+  --red: #E53935; --red-bg: #FFF0F0;
+  --orange: #F57C00; --orange-bg: #FFF4E0;
+}
 
-    .ds-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 3rem 1.5rem;
-    }
+body {
+  font-family: 'Pretendard Variable','Pretendard',-apple-system,sans-serif;
+  background: var(--bg-soft);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.6;
+}
 
-    .ds-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 3rem;
-    }
+/* ── SIDEBAR ── */
+.sidebar {
+  position: fixed; left: 0; top: 0; bottom: 0;
+  width: 220px;
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  z-index: 200;
+  overflow-y: auto;
+}
 
-    .ds-title-group h1 {
-      font-family: 'Black Han Sans', sans-serif;
-      font-size: 2.5rem;
-      margin: 0;
-      color: var(--ds-brand);
-    }
+.sidebar-logo {
+  padding: 24px 20px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
 
-    .ds-title-group p {
-      margin: 0.5rem 0 0;
-      color: #64748b;
-      font-size: 1.1rem;
-    }
+.logo-scooter {
+  animation: oscillate 18s ease-in-out infinite alternate;
+}
+@keyframes oscillate {
+  0%   { transform: translateX(0) rotate(-1deg); }
+  50%  { transform: translateX(3px) rotate(1deg); }
+  100% { transform: translateX(-2px) rotate(-0.5deg); }
+}
 
-    .back-btn {
-      padding: 0.6rem 1.2rem;
-      border: 1px solid var(--ds-brand);
-      border-radius: 8px;
-      color: var(--ds-brand);
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 0.9rem;
-      transition: all 0.2s;
-    }
+.logo-text {
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 20px;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.logo-version {
+  font-size: 10px; font-weight: 700;
+  background: var(--brand); color: #fff;
+  padding: 1px 6px; border-radius: 4px;
+  margin-left: auto;
+}
 
-    .back-btn:hover {
-      background: var(--ds-brand);
-      color: white;
-    }
+.nav-section {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+.nav-section:last-child { border-bottom: none; flex: 1; }
 
-    .ds-section {
-      margin-bottom: 4rem;
-    }
+.nav-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--faint);
+  padding: 8px 20px 4px;
+}
 
-    .ds-section-title {
-      font-size: 1.5rem;
-      font-weight: 800;
-      margin-bottom: 1.5rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 2px solid var(--ds-border);
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
+.nav-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 20px;
+  font-size: 13px; font-weight: 500; color: var(--muted);
+  cursor: pointer;
+  border-left: 3px solid transparent;
+  transition: all 0.15s;
+  border: none; background: none; width: 100%; text-align: left;
+  border-left: 3px solid transparent;
+}
+.nav-item:hover { background: var(--bg-soft); color: var(--text); }
+.nav-item.active { background: var(--brand-soft); color: var(--brand-ink); font-weight: 700; border-left-color: var(--brand); }
 
-    .ds-section-title::before {
-      content: '';
-      width: 6px;
-      height: 1.5rem;
-      background: var(--ds-brand);
-      border-radius: 3px;
-    }
+.nav-item svg { flex-shrink: 0; }
 
-    .ds-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-      gap: 1.5rem;
-    }
+/* ── MAIN ── */
+.main {
+  margin-left: 220px;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+}
 
-    .ds-card {
-      background: var(--ds-card-bg);
-      border: 1px solid var(--ds-border);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
+/* ── TOP BAR ── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  height: 52px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.topbar-title { font-size: 14px; font-weight: 700; color: var(--text); }
+.topbar-pills { display: flex; gap: 6px; }
+.topbar-pill {
+  font-size: 11px; font-weight: 600; padding: 3px 10px;
+  border-radius: 99px; border: 1px solid var(--border);
+  color: var(--muted); background: var(--bg);
+  cursor: pointer; transition: all 0.15s;
+}
+.topbar-pill:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-soft); }
+.topbar-pill.active { background: var(--brand); color: #fff; border-color: var(--brand); }
 
-    .ds-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    }
+/* ── CONTENT ── */
+.content { padding: 40px; flex: 1; display: none; }
+.content.active { display: block; }
 
-    .ds-card-header {
-      padding: 1rem;
-      background: #f1f5f9;
-      border-bottom: 1px solid var(--ds-border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
+/* ── HERO (overview) ── */
+.overview-hero {
+  background: var(--text);
+  border-radius: 16px;
+  padding: 48px 52px;
+  display: flex; justify-content: space-between; align-items: flex-end;
+  margin-bottom: 32px; overflow: hidden; position: relative;
+}
+.overview-hero::after {
+  content: '';
+  position: absolute; right: -40px; top: -60px;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(27,107,255,0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-brand { font-family: 'Black Han Sans',sans-serif; font-size: 52px; color: #fff; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 12px; }
+.hero-sub { font-size: 15px; color: rgba(255,255,255,0.55); font-weight: 500; max-width: 420px; line-height: 1.65; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--brand); color: #fff;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
+  padding: 5px 12px; border-radius: 99px; margin-bottom: 14px;
+}
+.hero-stats { display: flex; flex-direction: column; gap: 10px; flex-shrink: 0; z-index: 1; }
+.hero-stat { background: rgba(255,255,255,0.07); border-radius: 10px; padding: 14px 20px; text-align: right; border: 1px solid rgba(255,255,255,0.08); }
+.hero-stat-n { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: -0.03em; line-height: 1; }
+.hero-stat-l { font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
 
-    .ds-card-title {
-      font-weight: 700;
-      font-size: 0.9rem;
-      color: #334155;
-    }
+/* ── OVERVIEW GRID ── */
+.overview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 32px; }
+.ov-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 24px;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s var(--ease), transform 0.2s var(--ease);
+  cursor: pointer;
+}
+.ov-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-3px); }
+.ov-card-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+.ov-card-title { font-size: 15px; font-weight: 800; letter-spacing: -0.01em; margin-bottom: 6px; }
+.ov-card-desc  { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+.ov-card-count { font-size: 11px; font-weight: 700; color: var(--faint); margin-top: 10px; }
 
-    .ds-external-link {
-      color: var(--ds-brand);
-      text-decoration: none;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
+/* ── SECTION heading ── */
+.sec-heading {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 18px; font-weight: 800; letter-spacing: -0.015em;
+  padding-left: 14px; border-left: 4px solid var(--brand);
+  margin-bottom: 16px;
+}
+.sec-heading-sub { font-size: 13px; color: var(--muted); font-weight: 500; margin-bottom: 24px; padding-left: 18px; margin-top: -10px; }
 
-    .ds-iframe-container {
-      position: relative;
-      width: 100%;
-      height: 200px;
-      background: white;
-    }
+/* ── TOKEN SECTION ── */
+.token-section { display: flex; flex-direction: column; gap: 32px; }
 
-    .ds-iframe-container iframe {
-      width: 100%;
-      height: 100%;
-      border: none;
-    }
+/* Color palette strip */
+.palette-block { display: flex; flex-direction: column; gap: 8px; }
+.palette-name { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 4px; }
+.palette-strip { display: flex; border-radius: 8px; overflow: hidden; border: 1px solid rgba(0,0,0,0.07); }
+.p-step { flex: 1; height: 44px; position: relative; cursor: default; transition: flex 0.2s; }
+.p-step:hover { flex: 2; }
+.p-step-label {
+  position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+  font-size: 8px; font-weight: 700; opacity: 0; transition: opacity 0.15s;
+  white-space: nowrap;
+}
+.p-step:hover .p-step-label { opacity: 1; }
 
-    @media (max-width: 768px) {
-      .ds-grid {
-        grid-template-columns: 1fr;
-      }
-      .ds-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1.5rem;
-      }
-    }
-  </style>
+/* Spacing visual */
+.spacing-demo { display: flex; flex-direction: column; gap: 8px; }
+.sp-row { display: flex; align-items: center; gap: 12px; }
+.sp-bar-wrap { flex: 1; height: 20px; background: var(--bg-soft); border-radius: 4px; overflow: hidden; }
+.sp-bar { height: 100%; background: var(--brand-soft); border-right: 2px solid var(--brand); border-radius: 4px; }
+.sp-name { font-size: 11px; font-weight: 700; color: var(--muted); width: 64px; font-family: 'SF Mono','Fira Code',monospace; }
+.sp-value { font-size: 11px; color: var(--faint); width: 40px; text-align: right; }
+
+/* Motion demo */
+.motion-demo { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }
+.motion-card {
+  background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 14px 16px;
+}
+.motion-card-title { font-size: 11px; font-weight: 700; color: var(--muted); margin-bottom: 8px; letter-spacing: 0.04em; text-transform: uppercase; }
+.motion-track { height: 6px; background: var(--bg-soft); border-radius: 99px; position: relative; overflow: visible; margin-bottom: 6px; }
+.motion-ball {
+  width: 14px; height: 14px; border-radius: 50%; background: var(--brand);
+  position: absolute; top: -4px; left: 0;
+  animation: none;
+}
+.motion-card:hover .motion-ball { animation: slide 1s var(--ease-fn, ease) forwards; }
+@keyframes slide { from { left: 0; } to { left: calc(100% - 14px); } }
+.motion-label { font-size: 10px; color: var(--faint); }
+
+/* ── COMPONENT SECTION ── */
+.comp-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+.comp-card {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); overflow: hidden;
+  box-shadow: var(--shadow-sm); transition: box-shadow 0.2s;
+}
+.comp-card:hover { box-shadow: var(--shadow-md); }
+.comp-card-header {
+  padding: 14px 18px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg-soft);
+}
+.comp-card-title { font-size: 13px; font-weight: 700; }
+.comp-card-tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; }
+.tag-updated { background: var(--brand-soft); color: var(--brand-ink); }
+.tag-new     { background: var(--green-bg); color: var(--green); }
+.tag-stable  { background: var(--bg-soft); color: var(--faint); }
+.comp-preview { padding: 20px 18px; min-height: 100px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+
+/* inline mini components for preview */
+.mini-btn { padding: 7px 14px; border-radius: 7px; font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer; border: none; transition: background 0.15s; }
+.mini-btn-p { background: var(--brand); color: #fff; }
+.mini-btn-p:hover { background: var(--brand-deep); }
+.mini-btn-s { background: #fff; color: var(--text); border: 1.5px solid var(--border-strong); }
+.mini-btn-s:hover { background: var(--brand-soft); border-color: var(--brand); color: var(--brand-ink); }
+.mini-btn-d { background: #fff; color: var(--red); border: 1.5px solid #FFB3B3; }
+.mini-btn-dis { background: var(--bg-soft); color: var(--faint); border: 1.5px solid var(--border); cursor: not-allowed; }
+
+.mini-input { padding: 7px 12px; border: 1.5px solid var(--border-strong); border-radius: 7px; font-family: inherit; font-size: 12px; width: 140px; outline: none; }
+.mini-input:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(27,107,255,0.12); }
+.mini-input.err { border-color: var(--red); }
+
+.mini-callout { padding: 10px 12px; border-radius: 8px; border-left: 3px solid; font-size: 12px; line-height: 1.5; max-width: 100%; }
+.mini-callout-case { background: var(--green-bg); border-color: var(--green); color: #16402A; }
+.mini-callout-q    { background: var(--brand-soft); border-color: var(--brand); color: var(--brand-ink); }
+.mini-callout-c    { background: var(--bg-soft); border-color: var(--muted); color: var(--text); }
+
+.mini-toast {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 12px; border-radius: 8px; border: 1px solid;
+  background: #fff; font-size: 12px; font-weight: 500; width: 100%;
+  box-shadow: 0 3px 12px rgba(17,20,24,0.09);
+}
+.mini-toast-icon { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.mini-badge { padding: 3px 8px; border-radius: 99px; font-size: 10px; font-weight: 700; }
+.mini-badge-p { background: var(--brand-soft); color: var(--brand-ink); }
+.mini-badge-s { background: var(--green-bg); color: var(--green); }
+.mini-badge-e { background: var(--red-bg); color: var(--red); }
+
+/* skeleton mini */
+@keyframes shimmer { 0%{background-position:-200px 0} 100%{background-position:200px 0} }
+.mini-skel { background: linear-gradient(90deg,#F4F6FA 25%,#E8ECF3 50%,#F4F6FA 75%); background-size:400px 100%; animation: shimmer 1.4s ease-in-out infinite; border-radius: 4px; }
+
+/* ── CHANGELOG ── */
+.changelog { display: flex; flex-direction: column; gap: 0; }
+.cl-item { display: grid; grid-template-columns: 120px 1fr; gap: 24px; padding: 18px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; }
+.cl-item:last-child { border-bottom: none; }
+.cl-date { font-size: 12px; color: var(--faint); font-weight: 500; padding-top: 2px; }
+.cl-content { display: flex; flex-direction: column; gap: 6px; }
+.cl-title { font-weight: 700; color: var(--text); }
+.cl-desc { color: var(--muted); font-size: 13px; line-height: 1.55; }
+.cl-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 2px; }
+.cl-tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; }
+
+/* Status pills */
+.status-dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; margin-right: 5px; vertical-align: middle; }
+
+/* Callout */
+.ds-callout { padding: 14px 16px; border-radius: var(--radius); border-left: 3px solid; font-size: 13.5px; line-height: 1.65; margin-bottom: 20px; }
+.ds-callout-blue { background: var(--brand-soft); border-color: var(--brand); color: var(--brand-ink); }
+.ds-callout-green { background: var(--green-bg); border-color: var(--green); color: #16402A; }
+
+/* ── ICONS PAGE ── */
+.icon-grid { display: flex; flex-wrap: wrap; gap: 6px; }
+.icon-item {
+  width: 54px; padding: 8px 4px;
+  border-radius: 8px; border: 1px solid var(--border);
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  cursor: default; transition: background 0.15s, border-color 0.15s;
+}
+.icon-item:hover { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
+.icon-name { font-size: 9px; color: var(--faint); text-align: center; line-height: 1.2; }
+.icon-item:hover .icon-name { color: var(--brand-ink); }
+
+/* ── Animations ── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+.content.active > * { animation: fadeUp 0.4s var(--ease) both; }
+.content.active > *:nth-child(2) { animation-delay: 0.04s; }
+.content.active > *:nth-child(3) { animation-delay: 0.08s; }
+.content.active > *:nth-child(4) { animation-delay: 0.12s; }
+</style>
 </head>
 <body>
-  <div class="ds-container">
-    <header class="ds-header">
-      <div class="ds-title-group">
-        <h1>BOOONG Design System</h1>
-      </div>
-      <a href="index.html" class="back-btn">대시보드로 돌아가기</a>
-    </header>
 
-    <!-- Identity -->
-    <section class="ds-section">
-      <h2 class="ds-section-title">Identity & Brand</h2>
-      <div class="ds-grid">
-        <div class="ds-card">
-          <div class="ds-card-header">
-            <span class="ds-card-title">Brand Logo</span>
-            <a href="preview/brand-logo.html" class="ds-external-link" target="_blank">Full View</a>
-          </div>
-          <div class="ds-iframe-container">
-            <iframe src="preview/brand-logo.html" scrolling="no"></iframe>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Colors -->
-    <section class="ds-section">
-      <h2 class="ds-section-title">Colors</h2>
-      <div class="ds-grid">
-        <div class="ds-card">
-          <div class="ds-card-header">
-            <span class="ds-card-title">Brand Colors</span>
-            <a href="preview/colors-brand.html" class="ds-external-link" target="_blank">Full View</a>
-          </div>
-          <div class="ds-iframe-container">
-            <iframe src="preview/colors-brand.html" scrolling="no"></iframe>
-          </div>
-        </div>
-        <div class="ds-card">
-          <div class="ds-card-header">
-            <span class="ds-card-title">Neutral Colors</span>
-            <a href="preview/colors-neutral.html" class="ds-external-link" target="_blank">Full View</a>
-          </div>
-          <div class="ds-iframe-container">
-            <iframe src="preview/colors-neutral.html" scrolling="no"></iframe>
-          </div>
-        </div>
-        <div class="ds-card">
-          <div class="ds-card-header">
-            <span class="ds-card-title">Callout Semantic Colors</span>
-            <a href="preview/colors-callout.html" class="ds-external-link" target="_blank">Full View</a>
-          </div>
-          <div class="ds-iframe-container">
-            <iframe src="preview/colors-callout.html" scrolling="no"></iframe>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Typography -->
-    <section class="ds-section">
-      <h2 class="ds-section-title">Typography</h2>
-      <div class="ds-grid">
-        <div class="ds-card">
-          <div class="ds-card-header">
-            <span class="ds-card-title">Display (Black Han Sans)</span>
-            <a href="preview/type-display.html" class="ds-external-link" target="_blank">Full View</a>
-          </div>
-          <div class="ds-iframe-container">
-            <iframe src="preview/type-display.html" scrolling="no"></iframe>
-          </div>
-        </div>
-        <div class="ds-card">
-          <div class="ds-card-header">
-            <span class="ds-card-title">Body (Serif)</span>
-            <a href="preview/type-body.html" class="ds-external-link" target="_blank">Full View</a>
-          </div>
-          <div class="ds-iframe-container">
-            <iframe src="preview/type-body.html" scrolling="no"></iframe>
-          </div>
-        </div>
-        <div class="ds-card">
-          <div class="ds-card-header">
-            <span class="ds-card-title">UI (Sans-Serif)</span>
-            <a href="preview/type-ui.html" class="ds-external-link" target="_blank">Full View</a>
-          </div>
-          <div class="ds-iframe-container">
-            <iframe src="preview/type-ui.html" scrolling="no"></iframe>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Layout Tokens -->
-    <section class="ds-section">
-      <h2 class="ds-section-title">Layout & Tokens</h2>
-      <div class="ds-grid">
-        <div class="ds-card">
-          <div class="ds-card-header">
-            <span class="ds-card-title">Spacing Scale</span>
-            <a href="preview/spacing-tokens.html" class="ds-external-link" target="_blank">Full View</a>
-          </div>
-          <div class="ds-iframe-container">
-            <iframe src="preview/spacing-tokens.html" scrolling="no"></iframe>
-          </div>
-        </div>
-        <div class="ds-card">
-          <div class="ds-card-header">
-            <span class="ds-card-title">Shadows & Radii</span>
-            <a href="preview/shadows-radii.html" class="ds-external-link" target="_blank">Full View</a>
-          </div>
-          <div class="ds-iframe-container">
-            <iframe src="preview/shadows-radii.html" scrolling="no"></iframe>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Components -->
-    <section class="ds-section">
-      <h2 class="ds-section-title">Components</h2>
-      <div class="ds-grid">
-        <div class="ds-card">
-          <div class="ds-card-header">
-            <span class="ds-card-title">Buttons</span>
-            <a href="preview/components-buttons.html" class="ds-external-link" target="_blank">Full View</a>
-          </div>
-          <div class="ds-iframe-container">
-            <iframe src="preview/components-buttons.html" scrolling="no"></iframe>
-          </div>
-        </div>
-        <div class="ds-card">
-          <div class="ds-card-header">
-            <span class="ds-card-title">Inputs & Controls</span>
-            <a href="preview/components-inputs.html" class="ds-external-link" target="_blank">Full View</a>
-          </div>
-          <div class="ds-iframe-container">
-            <iframe src="preview/components-inputs.html" scrolling="no"></iframe>
-          </div>
-        </div>
-        <div class="ds-card">
-          <div class="ds-card-header">
-            <span class="ds-card-title">Cards</span>
-            <a href="preview/components-cards.html" class="ds-external-link" target="_blank">Full View</a>
-          </div>
-          <div class="ds-iframe-container">
-            <iframe src="preview/components-cards.html" scrolling="no"></iframe>
-          </div>
-        </div>
-        <div class="ds-card">
-          <div class="ds-card-header">
-            <span class="ds-card-title">Callouts</span>
-            <a href="preview/components-callouts.html" class="ds-external-link" target="_blank">Full View</a>
-          </div>
-          <div class="ds-iframe-container" style="height: 300px;">
-            <iframe src="preview/components-callouts.html" scrolling="no"></iframe>
-          </div>
-        </div>
-        <div class="ds-card">
-          <div class="ds-card-header">
-            <span class="ds-card-title">Answer States</span>
-            <a href="preview/components-answer.html" class="ds-external-link" target="_blank">Full View</a>
-          </div>
-          <div class="ds-iframe-container">
-            <iframe src="preview/components-answer.html" scrolling="no"></iframe>
-          </div>
-        </div>
-        <div class="ds-card">
-          <div class="ds-card-header">
-            <span class="ds-card-title">Sidebar</span>
-            <a href="preview/components-sidebar.html" class="ds-external-link" target="_blank">Full View</a>
-          </div>
-          <div class="ds-iframe-container" style="height: 400px;">
-            <iframe src="preview/components-sidebar.html" scrolling="no"></iframe>
-          </div>
-        </div>
-      </div>
-    </section>
+<!-- ── SIDEBAR ── -->
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <svg class="logo-scooter" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1B6BFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/>
+      <path d="M12 18h-4m8 0h2l2-6h-8l-2-4H6"/><path d="M14 6h2"/>
+    </svg>
+    <span class="logo-text">BOOONG</span>
+    <span class="logo-version">v2</span>
   </div>
+
+  <div class="nav-section">
+    <div class="nav-label">개요</div>
+    <button class="nav-item active" onclick="navigate('overview')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Overview
+    </button>
+    <button class="nav-item" onclick="navigate('changelog')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Changelog
+    </button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Foundation</div>
+    <button class="nav-item" onclick="navigate('colors')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 0 20"/></svg>
+      색상 토큰
+    </button>
+    <button class="nav-item" onclick="navigate('typography')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+      타이포그래피
+    </button>
+    <button class="nav-item" onclick="navigate('spacing')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      Spacing &amp; Motion
+    </button>
+    <button class="nav-item" onclick="navigate('icons')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      아이콘
+    </button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-label">Components</div>
+    <button class="nav-item" onclick="navigate('buttons')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="10" rx="3"/></svg>
+      버튼
+    </button>
+    <button class="nav-item" onclick="navigate('inputs')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="8" y1="12" x2="8.01" y2="12"/></svg>
+      인풋 &amp; 폼
+    </button>
+    <button class="nav-item" onclick="navigate('callouts')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Callout
+    </button>
+    <button class="nav-item" onclick="navigate('feedback')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      Toast &amp; Alert
+    </button>
+    <button class="nav-item" onclick="navigate('states')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      States
+    </button>
+  </div>
+</nav>
+
+<!-- ── MAIN ── -->
+<div class="main">
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">Overview</div>
+    <div class="topbar-pills">
+      <span class="topbar-pill active">Light</span>
+      <span class="topbar-pill">v2.0</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PAGE: OVERVIEW
+  ══════════════════════════════════════════ -->
+  <div class="content active" id="page-overview">
+    <!-- Hero -->
+    <div class="overview-hero">
+      <div>
+        <div class="hero-badge">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+          v2.0 업데이트
+        </div>
+        <div class="hero-brand">BOOONG<br>Design System</div>
+        <div class="hero-sub">사회교육공동체 BOOONG의 교실 프레젠터 &amp; 대시보드를 위한 디자인 토큰, 컴포넌트, 패턴 체계</div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><div class="hero-stat-n">5</div><div class="hero-stat-l">토큰 계층</div></div>
+        <div class="hero-stat"><div class="hero-stat-n">12</div><div class="hero-stat-l">컴포넌트</div></div>
+        <div class="hero-stat"><div class="hero-stat-n">26</div><div class="hero-stat-l">아이콘</div></div>
+      </div>
+    </div>
+
+    <!-- Card grid -->
+    <div class="overview-grid">
+      <div class="ov-card" onclick="navigate('colors')">
+        <div class="ov-card-icon" style="background:#E6EEFF;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B6BFF" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 0 20"/></svg>
+        </div>
+        <div class="ov-card-title">색상 토큰</div>
+        <div class="ov-card-desc">Atomic 팔레트 + Semantic 2계층 구조. Blue/Neutral/Green/Red/Orange 스케일.</div>
+        <div class="ov-card-count">5 팔레트 · 30+ 토큰</div>
+      </div>
+      <div class="ov-card" onclick="navigate('typography')">
+        <div class="ov-card-icon" style="background:#EAF5EE;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2E7D4F" stroke-width="2" stroke-linecap="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+        </div>
+        <div class="ov-card-title">타이포그래피</div>
+        <div class="ov-card-desc">Display(Black Han Sans) · Body(Gowun Batang) · UI(Pretendard) 3종 서체 체계.</div>
+        <div class="ov-card-count">3 서체 · 10 크기 · 5 역할</div>
+      </div>
+      <div class="ov-card" onclick="navigate('spacing')">
+        <div class="ov-card-icon" style="background:#FFF4E0;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F57C00" stroke-width="2" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/></svg>
+        </div>
+        <div class="ov-card-title">Spacing &amp; Motion</div>
+        <div class="ov-card-desc">4px grid 기반 18단계 spacing + duration/easing 토큰. prefers-reduced-motion 대응.</div>
+        <div class="ov-card-count">18 spacing · 6 duration · 6 easing</div>
+      </div>
+      <div class="ov-card" onclick="navigate('buttons')">
+        <div class="ov-card-icon" style="background:#F4F6FA;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5A6372" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="10" rx="3"/></svg>
+        </div>
+        <div class="ov-card-title">버튼</div>
+        <div class="ov-card-desc">Primary · Secondary · Ghost · Danger · Link. 4가지 크기, Normal/Disabled/Loading 상태.</div>
+        <div class="ov-card-count">5 variant · 4 size · 3 state</div>
+      </div>
+      <div class="ov-card" onclick="navigate('feedback')">
+        <div class="ov-card-icon" style="background:#FFF0F0;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E53935" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/></svg>
+        </div>
+        <div class="ov-card-title">Toast &amp; Alert</div>
+        <div class="ov-card-desc">Normal · Success · Error · Warning 4종 Toast. Destructive · Confirm 2종 Alert Dialog.</div>
+        <div class="ov-card-count">4 toast · 2 alert — 신규</div>
+      </div>
+      <div class="ov-card" onclick="navigate('states')">
+        <div class="ov-card-icon" style="background:#E6EEFF;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B6BFF" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="ov-card-title">States</div>
+        <div class="ov-card-desc">Skeleton shimmer 2종, Empty State 3종(빈 목록 · 검색 없음 · 오류).</div>
+        <div class="ov-card-count">2 skeleton · 3 empty — 신규</div>
+      </div>
+    </div>
+
+    <!-- Layer diagram -->
+    <div class="sec-heading">토큰 계층 구조</div>
+    <div class="sec-heading-sub">원티드 DS 벤치마크 기반 — Atomic → Semantic → Component</div>
+    <div style="background:#17181A; border-radius:14px; padding:28px; display:flex; flex-direction:column; gap:14px; margin-bottom:32px;">
+      <div style="font-size:10px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.3);">BOOONG Design System — Token Architecture</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+        <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:16px;">
+          <div style="font-size:11px; font-weight:700; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">1 · Atomic Palette</div>
+          <div style="display:flex; flex-direction:column; gap:5px;">
+            <div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.75); display:flex; align-items:center; gap:7px;"><span style="width:5px;height:5px;border-radius:50%;background:#1B6BFF;flex-shrink:0;"></span>Blue 50–900</div>
+            <div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.75); display:flex; align-items:center; gap:7px;"><span style="width:5px;height:5px;border-radius:50%;background:#9AA3B2;flex-shrink:0;"></span>Neutral 0–900</div>
+            <div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.75); display:flex; align-items:center; gap:7px;"><span style="width:5px;height:5px;border-radius:50%;background:#2E7D4F;flex-shrink:0;"></span>Green 50–900</div>
+            <div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.75); display:flex; align-items:center; gap:7px;"><span style="width:5px;height:5px;border-radius:50%;background:#E53935;flex-shrink:0;"></span>Red 50–900</div>
+            <div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.75); display:flex; align-items:center; gap:7px;"><span style="width:5px;height:5px;border-radius:50%;background:#F57C00;flex-shrink:0;"></span>Orange 50–700</div>
+          </div>
+        </div>
+        <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:16px;">
+          <div style="font-size:11px; font-weight:700; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">2 · Semantic Tokens</div>
+          <div style="display:flex; flex-direction:column; gap:5px;">
+            <div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.75); display:flex; align-items:center; gap:7px;"><span style="width:5px;height:5px;border-radius:50%;background:#1B6BFF;flex-shrink:0;"></span>Primary / On-primary</div>
+            <div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.75); display:flex; align-items:center; gap:7px;"><span style="width:5px;height:5px;border-radius:50%;background:#9AA3B2;flex-shrink:0;"></span>Surface / Text</div>
+            <div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.75); display:flex; align-items:center; gap:7px;"><span style="width:5px;height:5px;border-radius:50%;background:#2E7D4F;flex-shrink:0;"></span>Success / Error</div>
+            <div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.75); display:flex; align-items:center; gap:7px;"><span style="width:5px;height:5px;border-radius:50%;background:#F57C00;flex-shrink:0;"></span>Warning / Disabled</div>
+            <div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.75); display:flex; align-items:center; gap:7px;"><span style="width:5px;height:5px;border-radius:50%;background:#5A6372;flex-shrink:0;"></span>Callout (사례/질문/개념)</div>
+          </div>
+        </div>
+        <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:16px;">
+          <div style="font-size:11px; font-weight:700; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;">3 · Components</div>
+          <div style="display:flex; flex-direction:column; gap:5px;">
+            <div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.75); display:flex; align-items:center; gap:7px;"><span style="width:5px;height:5px;border-radius:50%;background:#1B6BFF;flex-shrink:0;"></span>Button (5 variant)</div>
+            <div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.75); display:flex; align-items:center; gap:7px;"><span style="width:5px;height:5px;border-radius:50%;background:#1B6BFF;flex-shrink:0;"></span>Input + Chip</div>
+            <div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.75); display:flex; align-items:center; gap:7px;"><span style="width:5px;height:5px;border-radius:50%;background:#2E7D4F;flex-shrink:0;"></span>Toast + Alert</div>
+            <div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.75); display:flex; align-items:center; gap:7px;"><span style="width:5px;height:5px;border-radius:50%;background:#2E7D4F;flex-shrink:0;"></span>Skeleton + Empty</div>
+            <div style="font-size:12px; font-weight:500; color:rgba(255,255,255,0.75); display:flex; align-items:center; gap:7px;"><span style="width:5px;height:5px;border-radius:50%;background:#9AA3B2;flex-shrink:0;"></span>Callout · Card · Sidebar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PAGE: COLORS
+  ══════════════════════════════════════════ -->
+  <div class="content" id="page-colors">
+    <div class="sec-heading">색상 토큰</div>
+    <div class="sec-heading-sub">Atomic 팔레트 → Semantic 토큰 2계층. 컴포넌트는 Semantic 토큰만 참조합니다.</div>
+
+    <div class="ds-callout ds-callout-blue"><strong>사용 원칙:</strong> 컴포넌트 작성 시 <code>--blue-500</code> 같은 Atomic 변수를 직접 쓰지 않습니다. 반드시 <code>--color-primary</code>, <code>--color-error</code> 등 Semantic 토큰을 참조하세요.</div>
+
+    <div class="token-section">
+      <div>
+        <div style="font-size:13px; font-weight:700; color:var(--muted); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em; font-size:11px;">Blue (Brand)</div>
+        <div class="palette-strip">
+          <div class="p-step" style="background:#EBF2FF;"><div class="p-step-label" style="color:#1B6BFF;">50</div></div>
+          <div class="p-step" style="background:#D6E4FF;"><div class="p-step-label" style="color:#1B6BFF;">100</div></div>
+          <div class="p-step" style="background:#ADC8FF;"><div class="p-step-label" style="color:#1B6BFF;">200</div></div>
+          <div class="p-step" style="background:#84ABFF;"><div class="p-step-label" style="color:#1B6BFF;">300</div></div>
+          <div class="p-step" style="background:#5B8EFF;"><div class="p-step-label" style="color:#fff;">400</div></div>
+          <div class="p-step" style="background:#1B6BFF;"><div class="p-step-label" style="color:#fff;">500★</div></div>
+          <div class="p-step" style="background:#0F4FCC;"><div class="p-step-label" style="color:#fff;">600</div></div>
+          <div class="p-step" style="background:#0A3A99;"><div class="p-step-label" style="color:#fff;">700</div></div>
+          <div class="p-step" style="background:#0A2E7A;"><div class="p-step-label" style="color:#fff;">800</div></div>
+          <div class="p-step" style="background:#061D52;"><div class="p-step-label" style="color:#fff;">900</div></div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:11px; font-weight:700; color:var(--muted); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;">Neutral</div>
+        <div class="palette-strip">
+          <div class="p-step" style="background:#FFFFFF; border:1px solid #E3E7EE;"><div class="p-step-label" style="color:#5A6372;">0</div></div>
+          <div class="p-step" style="background:#F7F9FC;"><div class="p-step-label" style="color:#5A6372;">50</div></div>
+          <div class="p-step" style="background:#F4F6FA;"><div class="p-step-label" style="color:#5A6372;">100</div></div>
+          <div class="p-step" style="background:#E3E7EE;"><div class="p-step-label" style="color:#5A6372;">200</div></div>
+          <div class="p-step" style="background:#CFD6E2;"><div class="p-step-label" style="color:#5A6372;">300</div></div>
+          <div class="p-step" style="background:#9AA3B2;"><div class="p-step-label" style="color:#fff;">400</div></div>
+          <div class="p-step" style="background:#5A6372;"><div class="p-step-label" style="color:#fff;">500</div></div>
+          <div class="p-step" style="background:#3D4652;"><div class="p-step-label" style="color:#fff;">600</div></div>
+          <div class="p-step" style="background:#252B35;"><div class="p-step-label" style="color:#fff;">700</div></div>
+          <div class="p-step" style="background:#111418;"><div class="p-step-label" style="color:#fff;">900</div></div>
+        </div>
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px;">
+        <div>
+          <div style="font-size:11px; font-weight:700; color:var(--green); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;">Green</div>
+          <div class="palette-strip">
+            <div class="p-step" style="background:#EAF5EE;"></div>
+            <div class="p-step" style="background:#C9E8D4;"></div>
+            <div class="p-step" style="background:#6DBF90;"></div>
+            <div class="p-step" style="background:#2E7D4F;"></div>
+            <div class="p-step" style="background:#16402A;"></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px; font-weight:700; color:var(--red); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;">Red</div>
+          <div class="palette-strip">
+            <div class="p-step" style="background:#FFF0F0;"></div>
+            <div class="p-step" style="background:#FFB3B3;"></div>
+            <div class="p-step" style="background:#FF8080;"></div>
+            <div class="p-step" style="background:#E53935;"></div>
+            <div class="p-step" style="background:#C62828;"></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px; font-weight:700; color:var(--orange); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.06em;">Orange</div>
+          <div class="palette-strip">
+            <div class="p-step" style="background:#FFF4E0;"></div>
+            <div class="p-step" style="background:#FFD09B;"></div>
+            <div class="p-step" style="background:#FFA726;"></div>
+            <div class="p-step" style="background:#F57C00;"></div>
+            <div class="p-step" style="background:#E65100;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PAGE: TYPOGRAPHY
+  ══════════════════════════════════════════ -->
+  <div class="content" id="page-typography">
+    <div class="sec-heading">타이포그래피</div>
+    <div class="sec-heading-sub">3종 서체 체계 + 복합 텍스트 스타일 토큰</div>
+
+    <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:32px;">
+      <div style="font-family:'Black Han Sans',sans-serif; font-size:52px; color:var(--text); letter-spacing:-0.02em; line-height:1.1;">사회교육공동체 🛵</div>
+      <div style="font-size:10px; color:var(--faint); font-weight:700; letter-spacing:0.06em; text-transform:uppercase;">Display — Black Han Sans / --ts-display</div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:24px;">
+      <div style="border:1px solid var(--border); border-radius:12px; overflow:hidden;">
+        <div style="padding:10px 16px; background:var(--bg-soft); font-size:10px; font-weight:700; color:var(--faint); text-transform:uppercase; letter-spacing:0.07em;">Pretendard — UI Sans</div>
+        <div style="padding:20px 24px; display:flex; flex-direction:column; gap:12px;">
+          <div style="display:flex; align-items:baseline; gap:16px; padding-bottom:12px; border-bottom:1px solid var(--border);">
+            <div style="font-size:32px; font-weight:800; letter-spacing:-0.02em; flex:1;">수업을 시작합니다</div>
+            <div style="font-size:11px; color:var(--faint); text-align:right; line-height:1.5;">--ts-h2<br>32px · 800</div>
+          </div>
+          <div style="display:flex; align-items:baseline; gap:16px; padding-bottom:12px; border-bottom:1px solid var(--border);">
+            <div style="font-size:26px; font-weight:800; letter-spacing:-0.01em; flex:1;">1차시 — 차별의 정의</div>
+            <div style="font-size:11px; color:var(--faint); text-align:right; line-height:1.5;">--ts-h3<br>26px · 800</div>
+          </div>
+          <div style="display:flex; align-items:baseline; gap:16px; padding-bottom:12px; border-bottom:1px solid var(--border);">
+            <div style="font-size:21px; font-weight:800; flex:1;">학습 목표 확인</div>
+            <div style="font-size:11px; color:var(--faint); text-align:right; line-height:1.5;">--ts-h4<br>21px · 800</div>
+          </div>
+          <div style="display:flex; align-items:baseline; gap:16px;">
+            <div style="font-size:15px; font-weight:500; color:var(--muted); line-height:1.65; flex:1;">UI 레이블 및 보조 텍스트입니다. 버튼, 사이드바, 메타 정보에 사용됩니다.</div>
+            <div style="font-size:11px; color:var(--faint); text-align:right; line-height:1.5; flex-shrink:0;">--ts-body-ui<br>15px · 500</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border:1px solid var(--border); border-radius:12px; overflow:hidden;">
+        <div style="padding:10px 16px; background:var(--bg-soft); font-size:10px; font-weight:700; color:var(--faint); text-transform:uppercase; letter-spacing:0.07em;">Gowun Batang — 수업 본문 Serif</div>
+        <div style="padding:20px 24px;">
+          <div style="font-family:'Gowun Batang',serif; font-size:18px; line-height:1.8; color:var(--text);">
+            차별이란 합리적인 이유 없이 특정한 사람 또는 집단을 다르게 대우하는 것을 말합니다.
+            타자를 돕고, 타자로서 돕고… 우리는 서로의 차이를 인정하는 것에서 출발합니다.
+          </div>
+          <div style="font-size:11px; color:var(--faint); margin-top:10px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em;">--ts-body · 18px · Regular · 1.8 line-height</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PAGE: SPACING & MOTION
+  ══════════════════════════════════════════ -->
+  <div class="content" id="page-spacing">
+    <div class="sec-heading">Spacing &amp; Motion</div>
+    <div class="sec-heading-sub">4px grid 기반 spacing 토큰 · Duration · Easing · prefers-reduced-motion 대응</div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:28px;">
+      <div>
+        <div style="font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:12px;">Spacing Scale (4px grid)</div>
+        <div class="spacing-demo">
+          <div class="sp-row"><div class="sp-name">--space-1</div><div class="sp-bar-wrap"><div class="sp-bar" style="width:2.2%;"></div></div><div class="sp-value">4px</div></div>
+          <div class="sp-row"><div class="sp-name">--space-2</div><div class="sp-bar-wrap"><div class="sp-bar" style="width:4.4%;"></div></div><div class="sp-value">8px</div></div>
+          <div class="sp-row"><div class="sp-name">--space-3</div><div class="sp-bar-wrap"><div class="sp-bar" style="width:6.7%;"></div></div><div class="sp-value">12px</div></div>
+          <div class="sp-row"><div class="sp-name">--space-4</div><div class="sp-bar-wrap"><div class="sp-bar" style="width:8.9%;"></div></div><div class="sp-value">16px</div></div>
+          <div class="sp-row"><div class="sp-name">--space-6</div><div class="sp-bar-wrap"><div class="sp-bar" style="width:13%;"></div></div><div class="sp-value">24px</div></div>
+          <div class="sp-row"><div class="sp-name">--space-8</div><div class="sp-bar-wrap"><div class="sp-bar" style="width:17.8%;"></div></div><div class="sp-value">32px</div></div>
+          <div class="sp-row"><div class="sp-name">--space-10</div><div class="sp-bar-wrap"><div class="sp-bar" style="width:22%;"></div></div><div class="sp-value">40px</div></div>
+          <div class="sp-row"><div class="sp-name">--space-12</div><div class="sp-bar-wrap"><div class="sp-bar" style="width:26.7%;"></div></div><div class="sp-value">48px</div></div>
+          <div class="sp-row"><div class="sp-name">--space-16</div><div class="sp-bar-wrap"><div class="sp-bar" style="width:35.6%;"></div></div><div class="sp-value">64px</div></div>
+          <div class="sp-row"><div class="sp-name">--space-24</div><div class="sp-bar-wrap"><div class="sp-bar" style="width:53%;"></div></div><div class="sp-value">96px</div></div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:11px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:12px;">Motion — Easing (hover to animate)</div>
+        <div class="motion-demo">
+          <div class="motion-card" style="--ease-fn: cubic-bezier(0.23,1,0.32,1);">
+            <div class="motion-card-title">--ease-spring</div>
+            <div class="motion-track"><div class="motion-ball"></div></div>
+            <div class="motion-label">cubic-bezier(0.23,1,0.32,1) · BOOONG 시그니처</div>
+          </div>
+          <div class="motion-card" style="--ease-fn: cubic-bezier(0,0,0.2,1);">
+            <div class="motion-card-title">--ease-out</div>
+            <div class="motion-track"><div class="motion-ball"></div></div>
+            <div class="motion-label">cubic-bezier(0,0,0.2,1) · 등장 애니메이션</div>
+          </div>
+          <div class="motion-card" style="--ease-fn: cubic-bezier(0.34,1.56,0.64,1);">
+            <div class="motion-card-title">--ease-bounce</div>
+            <div class="motion-track"><div class="motion-ball"></div></div>
+            <div class="motion-label">cubic-bezier(0.34,1.56,0.64,1) · 탄성 효과</div>
+          </div>
+          <div class="motion-card" style="--ease-fn: linear;">
+            <div class="motion-card-title">--dur-fast · base · slow</div>
+            <div class="motion-track"><div class="motion-ball" style="background:var(--faint);"></div></div>
+            <div class="motion-label">150ms · 250ms · 400ms · 600ms · 800ms</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ds-callout ds-callout-green"><strong>prefers-reduced-motion 대응:</strong> <code>colors_and_type.css</code>의 <code>@media (prefers-reduced-motion: reduce)</code> 블록이 모든 <code>--dur-*</code> 변수를 0ms로 오버라이드합니다. 별도 처리 없이 자동 적용됩니다.</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PAGE: ICONS
+  ══════════════════════════════════════════ -->
+  <div class="content" id="page-icons">
+    <div class="sec-heading">아이콘</div>
+    <div class="sec-heading-sub">Stroke 기반 인라인 SVG · 14 / 16 / 18 / 20 / 24px 5종 크기</div>
+    <div class="ds-callout ds-callout-blue">아이콘은 <code>aria-hidden="true"</code> (장식) 또는 <code>aria-label</code> (기능) 속성을 반드시 명시하세요. 텍스트와 함께 쓸 때는 아이콘에 <code>aria-hidden</code>, 텍스트가 레이블 역할을 합니다.</div>
+    <div class="icon-grid">
+      <!-- Navigation -->
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg><span class="icon-name">arrow-right</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg><span class="icon-name">arrow-left</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg><span class="icon-name">chevron-right</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg><span class="icon-name">chevron-left</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg><span class="icon-name">chevron-down</span></div>
+      <!-- Actions -->
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span class="icon-name">plus</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span class="icon-name">close</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span class="icon-name">check</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span class="icon-name">search</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><span class="icon-name">edit</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg><span class="icon-name">trash</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span class="icon-name">file</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="icon-name">home</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="icon-name">user</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span class="icon-name">users</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="icon-name">chat</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span class="icon-name">info</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span class="icon-name">warning</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg><span class="icon-name">error</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg><span class="icon-name">wifi</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span class="icon-name">clock</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span class="icon-name">download</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><span class="icon-name">upload</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><span class="icon-name">bell</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg><span class="icon-name">settings</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="9" x2="15" y2="15"/><line x1="15" y1="9" x2="9" y2="15"/></svg><span class="icon-name">close-sq</span></div>
+      <div class="icon-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg><span class="icon-name">volume</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PAGE: BUTTONS
+  ══════════════════════════════════════════ -->
+  <div class="content" id="page-buttons">
+    <div class="sec-heading">버튼</div>
+    <div class="sec-heading-sub">5 variant · 4 size · Normal / Disabled / Loading 상태</div>
+    <div class="comp-grid">
+      <div class="comp-card">
+        <div class="comp-card-header"><div class="comp-card-title">Variants</div><span class="comp-card-tag tag-updated">Updated</span></div>
+        <div class="comp-preview" style="gap:6px;">
+          <button class="mini-btn mini-btn-p">Primary</button>
+          <button class="mini-btn mini-btn-s">Secondary</button>
+          <button class="mini-btn" style="background:transparent;color:var(--brand);border:none;font-size:12px;font-weight:700;cursor:pointer;padding:7px 10px;">Ghost</button>
+          <button class="mini-btn mini-btn-d">Danger</button>
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-card-header"><div class="comp-card-title">States</div><span class="comp-card-tag tag-updated">Updated</span></div>
+        <div class="comp-preview" style="gap:6px;">
+          <button class="mini-btn mini-btn-p">Normal</button>
+          <button class="mini-btn mini-btn-dis">Disabled</button>
+          <button class="mini-btn" style="background:var(--brand);color:transparent;cursor:wait;position:relative;min-width:80px;border:none;border-radius:7px;font-size:12px;font-weight:700;padding:7px 14px;">
+            <span style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:12px;height:12px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.7s linear infinite;display:block;"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PAGE: INPUTS
+  ══════════════════════════════════════════ -->
+  <div class="content" id="page-inputs">
+    <div class="sec-heading">인풋 &amp; 폼</div>
+    <div class="sec-heading-sub">Default · Focused · Error · Success · Disabled · Chip</div>
+    <div class="comp-grid">
+      <div class="comp-card">
+        <div class="comp-card-header"><div class="comp-card-title">States</div><span class="comp-card-tag tag-updated">Updated</span></div>
+        <div class="comp-preview" style="flex-direction:column; align-items:stretch; gap:8px;">
+          <input class="mini-input" placeholder="기본 상태" style="width:100%;">
+          <input class="mini-input" style="border-color:var(--brand);box-shadow:0 0 0 3px rgba(27,107,255,0.12);width:100%;" value="Focused">
+          <input class="mini-input err" style="width:100%;" value="Error 상태">
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-card-header"><div class="comp-card-title">Chip / Tag</div><span class="comp-card-tag tag-new">New</span></div>
+        <div class="comp-preview" style="flex-wrap:wrap; gap:6px;">
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:99px;font-size:12px;font-weight:600;background:var(--brand-soft);color:var(--brand-ink);border:1px solid #ADC8FF;">차별 ×</span>
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:99px;font-size:12px;font-weight:600;background:var(--brand-soft);color:var(--brand-ink);border:1px solid #ADC8FF;">평등 ×</span>
+          <span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:99px;font-size:12px;font-weight:600;background:var(--bg-soft);color:var(--muted);border:1px solid var(--border);">사회</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PAGE: CALLOUTS
+  ══════════════════════════════════════════ -->
+  <div class="content" id="page-callouts">
+    <div class="sec-heading">Callout</div>
+    <div class="sec-heading-sub">교육 콘텐츠 특화 3종 — 사례 · 발문 · 개념</div>
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <div class="mini-callout mini-callout-case"><strong>[사례]</strong> 2021년 국가인권위원회는 특정 집단에 대한 채용 제한이 합리적 이유 없는 차별에 해당한다고 결정했습니다.</div>
+      <div class="mini-callout mini-callout-q"><strong>[발문]</strong> 이 사례에서 어떤 기준으로 차별 여부를 판단할 수 있을까요? 모둠별로 토의해보세요.</div>
+      <div class="mini-callout mini-callout-c"><strong>[개념]</strong> <strong>차별</strong>이란 합리적 이유 없이 특정한 사람 또는 집단을 다르게 대우하는 것을 말합니다.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PAGE: FEEDBACK
+  ══════════════════════════════════════════ -->
+  <div class="content" id="page-feedback">
+    <div class="sec-heading">Toast &amp; Alert</div>
+    <div class="sec-heading-sub">피드백 컴포넌트 — 4종 Toast · 2종 Alert Dialog (신규)</div>
+    <div class="comp-grid">
+      <div class="comp-card">
+        <div class="comp-card-header"><div class="comp-card-title">Toast — 4 Variants</div><span class="comp-card-tag tag-new">New</span></div>
+        <div class="comp-preview" style="flex-direction:column;align-items:stretch;gap:6px;padding:14px 16px;">
+          <div class="mini-toast" style="border-color:var(--border);">
+            <div class="mini-toast-icon" style="background:var(--brand-soft);color:var(--brand);"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/></svg></div>
+            <span style="flex:1;">수업이 저장되었습니다</span>
+            <span style="font-size:11px;font-weight:700;color:var(--brand);cursor:pointer;">확인</span>
+          </div>
+          <div class="mini-toast" style="border-color:#A0D4B5;">
+            <div class="mini-toast-icon" style="background:var(--green-bg);color:var(--green);"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span style="flex:1;"><strong>25명</strong>이 참여했습니다</span>
+          </div>
+          <div class="mini-toast" style="border-color:#FFB3B3;">
+            <div class="mini-toast-icon" style="background:var(--red-bg);color:var(--red);"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
+            <span style="flex:1;">연결이 끊어졌습니다</span>
+            <span style="font-size:11px;font-weight:700;color:var(--red);cursor:pointer;">재연결</span>
+          </div>
+          <div class="mini-toast" style="border-color:#FFD09B;">
+            <div class="mini-toast-icon" style="background:var(--orange-bg);color:var(--orange);"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg></div>
+            <span style="flex:1;">저장하지 않은 변경사항</span>
+            <span style="font-size:11px;font-weight:700;color:var(--orange);cursor:pointer;">저장</span>
+          </div>
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-card-header"><div class="comp-card-title">Alert Dialog</div><span class="comp-card-tag tag-new">New</span></div>
+        <div class="comp-preview" style="background:rgba(12,18,32,0.5);border-radius:8px;justify-content:center;padding:16px;">
+          <div style="background:#fff;border-radius:12px;padding:20px;max-width:240px;width:100%;box-shadow:0 16px 48px rgba(0,0,0,0.2);display:flex;flex-direction:column;gap:10px;">
+            <div style="width:36px;height:36px;border-radius:10px;background:var(--red-bg);display:flex;align-items:center;justify-content:center;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+            </div>
+            <div style="font-size:14px;font-weight:800;letter-spacing:-0.01em;">수업을 삭제할까요?</div>
+            <div style="font-size:12px;color:var(--muted);line-height:1.5;">삭제한 수업은 복구할 수 없습니다.</div>
+            <div style="display:flex;gap:6px;">
+              <button style="flex:1;padding:8px;border-radius:7px;border:none;background:var(--bg-soft);color:var(--muted);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;">취소</button>
+              <button style="flex:1;padding:8px;border-radius:7px;border:none;background:var(--red);color:#fff;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;">삭제</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PAGE: STATES
+  ══════════════════════════════════════════ -->
+  <div class="content" id="page-states">
+    <div class="sec-heading">States</div>
+    <div class="sec-heading-sub">Skeleton Loading · Empty State 3종 (신규)</div>
+    <div class="comp-grid">
+      <div class="comp-card">
+        <div class="comp-card-header"><div class="comp-card-title">Skeleton</div><span class="comp-card-tag tag-new">New</span></div>
+        <div class="comp-preview" style="flex-direction:column;gap:8px;padding:14px 16px;">
+          <div style="display:flex;gap:8px;align-items:center;">
+            <div class="mini-skel" style="width:36px;height:36px;border-radius:50%;flex-shrink:0;"></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:5px;">
+              <div class="mini-skel" style="height:12px;width:60%;"></div>
+              <div class="mini-skel" style="height:10px;width:40%;"></div>
+            </div>
+          </div>
+          <div class="mini-skel" style="height:60px;border-radius:8px;"></div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <div class="mini-skel" style="height:11px;width:90%;"></div>
+            <div class="mini-skel" style="height:11px;width:70%;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="comp-card">
+        <div class="comp-card-header"><div class="comp-card-title">Empty States</div><span class="comp-card-tag tag-new">New</span></div>
+        <div class="comp-preview" style="flex-direction:column;gap:8px;padding:14px 16px;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:14px;border:1.5px dashed var(--border);border-radius:10px;background:var(--bg-soft);text-align:center;">
+            <div style="width:32px;height:32px;border-radius:8px;background:var(--brand-soft);display:flex;align-items:center;justify-content:center;color:var(--brand);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <div style="font-size:12px;font-weight:700;">수업이 없습니다</div>
+            <div style="font-size:11px;color:var(--faint);line-height:1.4;">새 수업을 만들어 시작해보세요</div>
+            <button class="mini-btn mini-btn-p" style="font-size:11px;padding:5px 12px;">수업 만들기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       PAGE: CHANGELOG
+  ══════════════════════════════════════════ -->
+  <div class="content" id="page-changelog">
+    <div class="sec-heading">Changelog</div>
+    <div class="sec-heading-sub">버전별 변경 이력</div>
+    <div class="changelog">
+      <div class="cl-item">
+        <div class="cl-date">2026. 5. 1</div>
+        <div class="cl-content">
+          <div class="cl-title">v2.0 — 대규모 토큰 인프라 개선</div>
+          <div class="cl-desc">원티드 DS 벤치마크 기반 Gap 분석 후 적용. Atomic/Semantic 색상 2계층 분리, spacing·motion·typography 토큰 전면 정비.</div>
+          <div class="cl-tags">
+            <span class="cl-tag" style="background:var(--brand-soft);color:var(--brand-ink);">Tokens</span>
+            <span class="cl-tag" style="background:var(--green-bg);color:var(--green);">New Components</span>
+            <span class="cl-tag" style="background:var(--orange-bg);color:var(--orange);">Breaking</span>
+          </div>
+        </div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-date"></div>
+        <div class="cl-content">
+          <div class="cl-title">색상 토큰 — Atomic 팔레트 신설</div>
+          <div class="cl-desc">Blue/Neutral/Green/Red/Orange 5종 팔레트, 단계별 CSS 변수 추가. 기존 <code>--color-brand</code> 등은 하위 호환 alias로 유지.</div>
+          <div class="cl-tags"><span class="cl-tag" style="background:var(--brand-soft);color:var(--brand-ink);">Colors</span></div>
+        </div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-date"></div>
+        <div class="cl-content">
+          <div class="cl-title">Semantic 토큰 레이어 추가</div>
+          <div class="cl-desc"><code>--color-primary</code>, <code>--color-error</code>, <code>--color-success</code>, <code>--color-warning</code>, <code>--color-disabled-*</code>, <code>--color-text-*</code>, <code>--color-surface-*</code> 신설.</div>
+          <div class="cl-tags"><span class="cl-tag" style="background:var(--brand-soft);color:var(--brand-ink);">Colors</span></div>
+        </div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-date"></div>
+        <div class="cl-content">
+          <div class="cl-title">Motion 토큰 CSS 변수화</div>
+          <div class="cl-desc"><code>--dur-fast/base/slow/slower/slowest</code>, <code>--ease-spring/out/in-out/bounce</code>, <code>--transition-*</code> 복합 토큰 신설. <code>@media (prefers-reduced-motion)</code> 대응 포함.</div>
+          <div class="cl-tags"><span class="cl-tag" style="background:var(--orange-bg);color:var(--orange);">Motion</span></div>
+        </div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-date"></div>
+        <div class="cl-content">
+          <div class="cl-title">신규 컴포넌트 — Toast / Alert Dialog</div>
+          <div class="cl-desc">Normal·Success·Error·Warning 4종 Toast, Destructive·Confirm 2종 Alert Dialog 추가.</div>
+          <div class="cl-tags"><span class="cl-tag" style="background:var(--green-bg);color:var(--green);">New</span><span class="cl-tag" style="background:var(--bg-soft);color:var(--faint);">Feedback</span></div>
+        </div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-date"></div>
+        <div class="cl-content">
+          <div class="cl-title">신규 컴포넌트 — Skeleton / Empty State</div>
+          <div class="cl-desc">Shimmer 애니메이션 Skeleton 2종(카드·리스트), Empty State 3종(빈 목록·검색 없음·오류) 추가.</div>
+          <div class="cl-tags"><span class="cl-tag" style="background:var(--green-bg);color:var(--green);">New</span><span class="cl-tag" style="background:var(--bg-soft);color:var(--faint);">States</span></div>
+        </div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-date"></div>
+        <div class="cl-content">
+          <div class="cl-title">버튼 — Loading 상태 / Icon Button 추가</div>
+          <div class="cl-desc">Loading spinner 상태, Icon-only 버튼 variant, XSmall/Large 사이즈 추가. Disabled 스타일 opacity 대신 명시적 색상 토큰으로 교체.</div>
+          <div class="cl-tags"><span class="cl-tag" style="background:var(--brand-soft);color:var(--brand-ink);">Updated</span><span class="cl-tag" style="background:var(--bg-soft);color:var(--faint);">Button</span></div>
+        </div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-date"></div>
+        <div class="cl-content">
+          <div class="cl-title">인풋 — Error / Success 상태 / Chip 추가</div>
+          <div class="cl-desc">입력 필드 Error(빨강)·Success(초록) 상태, 아이콘·helper text 패턴 추가. 태그 입력용 Chip 컴포넌트 신설.</div>
+          <div class="cl-tags"><span class="cl-tag" style="background:var(--brand-soft);color:var(--brand-ink);">Updated</span><span class="cl-tag" style="background:var(--bg-soft);color:var(--faint);">Input</span></div>
+        </div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-date"></div>
+        <div class="cl-content">
+          <div class="cl-title">아이콘 시스템 초안</div>
+          <div class="cl-desc">26개 stroke 기반 SVG 아이콘 정의. 5단계 크기 기준(14/16/18/20/24px), 접근성 패턴(aria-hidden / aria-label) 가이드 추가.</div>
+          <div class="cl-tags"><span class="cl-tag" style="background:var(--green-bg);color:var(--green);">New</span><span class="cl-tag" style="background:var(--bg-soft);color:var(--faint);">Icons</span></div>
+        </div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-date">이전</div>
+        <div class="cl-content">
+          <div class="cl-title">v1.x — 초기 DS</div>
+          <div class="cl-desc">색상 변수, 타이포그래피, Callout 3종, 버튼·인풋·카드·사이드바 기본 컴포넌트.</div>
+          <div class="cl-tags"><span class="cl-tag" style="background:var(--bg-soft);color:var(--faint);">Stable</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<style>
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+
+<script>
+const pages = {
+  overview: 'Overview',
+  colors: '색상 토큰',
+  typography: '타이포그래피',
+  spacing: 'Spacing & Motion',
+  icons: '아이콘',
+  buttons: '버튼',
+  inputs: '인풋 & 폼',
+  callouts: 'Callout',
+  feedback: 'Toast & Alert',
+  states: 'States',
+  changelog: 'Changelog',
+};
+
+function navigate(id) {
+  // hide all
+  document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+  // show target
+  const page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+
+  // activate nav
+  document.querySelectorAll('.nav-item').forEach(el => {
+    if (el.getAttribute('onclick') === `navigate('${id}')`) el.classList.add('active');
+  });
+
+  // update topbar
+  document.getElementById('topbar-title').textContent = pages[id] || id;
+}
+</script>
 </body>
 </html>
-

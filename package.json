@@ -1,7 +1,7 @@
-﻿{
+{
   "name": "@yadoran-2025/booong-design-system",
-  "version": "1.0.1",
-  "description": "BOOONG shared design tokens, base styles, and legacy-compatible UI components.",
+  "version": "2.0.0",
+  "description": "BOOONG shared design tokens, base styles, and legacy-compatible UI components. v2.0 — Atomic/Semantic 2-layer tokens, projector-optimized contrast, component states.",
   "license": "UNLICENSED",
   "private": false,
   "style": "dist/booong.css",
@@ -9,7 +9,8 @@
     "dist",
     "src",
     "README.md",
-    "AI_GUIDE.md"
+    "AI_GUIDE.md",
+    "CHANGELOG.md"
   ],
   "exports": {
     "./dist/booong.css": "./dist/booong.css",
@@ -21,4 +22,3 @@
     "prepublishOnly": "npm run build"
   }
 }
-

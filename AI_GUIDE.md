@@ -14,7 +14,7 @@ Use this guide when an AI assistant works on a BOOONG-based project.
 ## Static HTML Usage
 
 ```html
-<link rel="stylesheet" href="https://yadoran-2025.github.io/booong-design-system/releases/v1.0.1/booong.css">
+<link rel="stylesheet" href="https://yadoran-2025.github.io/booong-design-system/releases/v2.0.0/booong.css">
 <link rel="stylesheet" href="./css/project.css">
 ```
 
