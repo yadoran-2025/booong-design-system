@@ -1,5 +1,31 @@
 # CHANGELOG
 
+## [2.1.0] — 2026-05-05
+
+### ✨ Added
+
+#### 컴포넌트
+- `input[type="range"]` 독립 스타일 신설
+  - 44px 터치 타겟, 6px 트랙, 22px 썸
+  - `--color-primary`, `--shadow-focus-ring` 토큰 적용
+  - webkit / moz 크로스브라우저 대응
+  - disabled 상태 (`opacity: 0.45`, `cursor: not-allowed`)
+
+#### 가이드
+- `AI_GUIDE.md` — **Classroom Game UX — Device Principles** 섹션 추가
+  - PC / 태블릿(세로) / 모바일 3단계 디바이스 티어 정의 (BOOONG 브레이크포인트 기준)
+  - Universal principles: `overlay-bar--top`, 44px 터치 타겟, `.toast`, `.alert-dialog`, CTA disabled 처리
+  - Game type A (지도·공간): `touch-action`, `100dvh`, overlay-bar 배치 가이드
+  - Game type B (긴 폼·슬라이더): 슬라이더+숫자 입력 쌍 패턴, 뉴스 그리드 반응형, `visualViewport` 키보드 처리
+  - Game type C (카드 선택): stepper 패턴, `aria-selected` 시맨틱, 타이머 urgency 처리
+  - 컴포넌트 quick-reference 표
+
+### 🔧 Changed
+
+- `.overlay-bar > input[type="range"]` — `height: auto`, `align-self: center` 추가 (새 44px 기본값 리셋)
+
+---
+
 ## [2.0.0] — 2026-05-01
 
 ### 🔴 Breaking Changes

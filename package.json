@@ -1,6 +1,6 @@
 {
   "name": "@yadoran-2025/booong-design-system",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "BOOONG shared design tokens, base styles, and legacy-compatible UI components. v2.0 — Atomic/Semantic 2-layer tokens, projector-optimized contrast, component states.",
   "license": "UNLICENSED",
   "private": false,
