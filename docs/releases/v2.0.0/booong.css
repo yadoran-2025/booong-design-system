@@ -2305,6 +2305,59 @@ em {
 .field__wrap-icon--error   { color: var(--color-error); }
 .field__wrap-icon--success { color: var(--color-success); }
 
+/* Range input (슬라이더) — 폼 컨텍스트 독립 사용 */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: var(--space-11); /* 44px 터치 타겟 확보 */
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-border-strong, var(--border-strong));
+}
+input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-border-strong, var(--border-strong));
+  border: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-primary, var(--brand));
+  border: 2.5px solid var(--color-surface, var(--bg));
+  box-shadow: var(--shadow-sm);
+  margin-top: -8px; /* (22px thumb - 6px track) / 2 */
+  transition: var(--transition-transform);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-primary, var(--brand));
+  border: 2.5px solid var(--color-surface, var(--bg));
+  box-shadow: var(--shadow-sm);
+}
+input[type="range"]:focus-visible::-webkit-slider-thumb {
+  box-shadow: var(--shadow-focus-ring);
+}
+input[type="range"]:focus-visible::-moz-range-thumb {
+  box-shadow: var(--shadow-focus-ring);
+}
+input[type="range"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
 /* Chip */
 .chip {
   display: inline-flex;
@@ -2584,4 +2637,126 @@ em {
   color: var(--color-text-tertiary, var(--text-faint));
   line-height: var(--leading-relaxed);
   max-width: 240px;
+}
+
+
+/* ================================================================
+   OVERLAY BAR — v2.0 신규
+   Full-viewport 맵·캔버스 위에 띄우는 반투명 컨트롤 바.
+   .overlay-bar--top / --bottom 위치 변형.
+   .overlay-bar--sticky-top / --sticky-bottom: position:absolute 고정.
+   ================================================================ */
+
+.overlay-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: color-mix(in srgb, var(--color-surface, var(--bg)) 72%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--color-border, var(--border)) 60%, transparent);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  color: var(--color-text-primary, var(--text));
+  box-shadow: var(--shadow-sm, 0 1px 4px rgb(0 0 0 / 0.10));
+  z-index: var(--z-sticky, 200);
+}
+
+.overlay-bar--top {
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  border-top: none;
+}
+
+.overlay-bar--bottom {
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  border-bottom: none;
+  padding-bottom: max(var(--space-2), calc(var(--space-2) + var(--safe-bottom, env(safe-area-inset-bottom, 0px))));
+}
+
+.overlay-bar--sticky-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+.overlay-bar--sticky-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.overlay-bar > * {
+  flex-shrink: 0;
+}
+
+.overlay-bar > input[type="range"] {
+  flex: 1 1 0;
+  min-width: 0;
+  height: auto;        /* 바 높이에 맞게 자동 조정 */
+  align-self: center;
+}
+
+
+/* ================================================================
+   CHIP TOGGLE — v2.0 신규
+   맵·캔버스 오버레이 위의 이진 레이어·필터 토글 칩.
+   .chip-toggle-group: 수평/수직 그룹 컨테이너.
+   ================================================================ */
+
+.chip-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  height: 30px;
+  border-radius: var(--radius-full);
+  border: 1.5px solid color-mix(in srgb, var(--color-border, var(--border)) 80%, transparent);
+  background: color-mix(in srgb, var(--color-surface, var(--bg)) 80%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  color: var(--color-text-secondary, var(--text));
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background var(--dur-fast, 120ms) var(--ease-out, ease),
+    color var(--dur-fast, 120ms) var(--ease-out, ease),
+    border-color var(--dur-fast, 120ms) var(--ease-out, ease);
+}
+
+.chip-toggle:hover {
+  background: color-mix(in srgb, var(--color-primary, var(--brand)) 10%, var(--color-surface, var(--bg)) 80%);
+  border-color: var(--color-primary, var(--brand));
+  color: var(--color-primary, var(--brand));
+}
+
+.chip-toggle.is-active,
+.chip-toggle[aria-pressed="true"] {
+  background: var(--color-primary, var(--brand));
+  border-color: var(--color-primary, var(--brand));
+  color: var(--color-on-primary, #fff);
+}
+
+.chip-toggle:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus-ring);
+}
+
+.chip-toggle-group {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: var(--space-1-5);
+}
+
+.chip-toggle-group--vertical {
+  flex-direction: column;
+  align-items: flex-end;
 }

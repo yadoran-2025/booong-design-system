@@ -159,7 +159,188 @@ When building a full-viewport tool (map, viewer, game), set the root container t
 
 ---
 
-## Static HTML Usage
+## Classroom Game UX — Device Principles
+
+These principles apply to BOOONG-based interactive classroom games (map redistricting, trading simulations, card-selection exercises, and similar student activities). They are derived from three game types and cover the full device range students actually use.
+
+### Device tiers
+
+BOOONG uses three breakpoints that map cleanly to device classes:
+
+| Tier | Width | Typical device | Layout mode |
+|------|-------|---------------|-------------|
+| **Mobile** | ≤ 760 px | Smartphone (portrait) | Single column, full-width |
+| **Tablet** | 761 – 900 px | iPad / tablet (portrait) | Two-column cards possible |
+| **PC** | ≥ 901 px | Desktop, tablet (landscape) | Multi-column, sidebar |
+
+Tablet in **portrait** (768–834 px) falls in the tablet tier and still needs most mobile principles. Tablet in **landscape** (1024 px+) falls in the PC tier and gets the full desktop layout automatically.
+
+---
+
+### Universal principles (all tiers)
+
+These apply regardless of device and should never be omitted.
+
+- **`overlay-bar--top` for the persistent status bar.** Always show group name, current phase/round, and any countdown timer in a top overlay bar. It must not scroll away.
+- **44 px minimum touch target.** Applies to all tiers — tablet and PC users also tap. Never shrink `.btn`, `.field__input`, or interactive cards below 44 px in height.
+- **`.toast` for teacher-triggered phase transitions.** When the teacher advances the round or opens submission, notify students with a toast — never rely on a page reload.
+- **`.alert-dialog` for dramatic reveal moments.** Role assignment, round results, and any high-stakes reveal should use the full modal treatment, not an inline message.
+- **Submission CTA disabled until valid.** Block the submit button with `[disabled]` until all required inputs are complete (ratio sum = 100 %, minimum text length, all cards selected, etc.). Show an inline validation hint — do not wait for a server error.
+
+---
+
+### Status bar
+
+```html
+<!-- All game types, all tiers -->
+<header class="overlay-bar overlay-bar--top overlay-bar--sticky-top">
+  <span class="chip chip--gray">1모둠</span>
+  <span>헌법 제정  2 / 5라운드</span>
+  <span class="timer" data-state="normal">02:47</span>  <!-- add data-state="urgent" under 30 s -->
+</header>
+```
+
+- Show at most three pieces of information: identity (group name), progress (phase / round), and urgency (timer if present).
+- When a countdown reaches 30 seconds, switch `data-state` to `"urgent"` and apply `color: var(--color-error)`. Use a CSS attribute selector — do not add a second class.
+- On **mobile**, keep label text to ≤ 6 characters per segment to avoid overflow.
+- On **PC**, the status bar may be part of a regular sticky `<header>` instead of `.overlay-bar` if the page is document-style (not full-viewport).
+
+---
+
+### Submission CTA
+
+```html
+<!-- Mobile / Tablet portrait: sticky full-width -->
+<footer class="overlay-bar overlay-bar--bottom overlay-bar--sticky-bottom">
+  <button class="btn btn--primary" style="flex: 1" disabled>
+    이번 라운드 투자 확정하기
+  </button>
+</footer>
+
+<!-- PC: inline at end of scrollable content -->
+<button class="btn btn--primary" style="width: 100%; margin-top: var(--space-6)" disabled>
+  이번 라운드 투자 확정하기
+</button>
+```
+
+- On **mobile and tablet portrait**, pin the button with `overlay-bar--bottom`. The bar includes `env(safe-area-inset-bottom)` automatically.
+- On **PC**, placing the button inline at the bottom of the scroll is sufficient — the screen is tall enough that the button is rarely out of view.
+- Always use full width (`flex: 1` or `width: 100%`) for a game CTA. This is not a paired-button dialog.
+
+---
+
+### Game type A — Spatial / map games (e.g. 게리맨더링)
+
+The primary content is a map or canvas. Controls float above it.
+
+| | Mobile | Tablet portrait | PC |
+|--|--------|----------------|-----|
+| Map area | `100dvh`, `touch-action: none` | `100dvh`, `touch-action: none` | `100dvh` or fixed height |
+| Controls | `overlay-bar--bottom` | `overlay-bar--bottom` | Side panel or `overlay-bar` |
+| Mode toggle | `.chip-toggle-group` (≤ 4) | `.chip-toggle-group` | `.chip-toggle-group` or sidebar buttons |
+| District labels | `clamp(11px, 2vw, 13px)` | `clamp(12px, 1.5vw, 14px)` | `14px` |
+
+On **tablet landscape / PC**, consider moving the mode-toggle group into a side panel if more than two modes exist. The `overlay-bar--bottom` is primarily a narrow-screen pattern.
+
+Set `touch-action: none` on the map element to prevent the browser's default pan-and-zoom from interfering with drawing interactions.
+
+---
+
+### Game type B — Long-form input games (e.g. 환율 파도타기)
+
+The primary interaction is reading content and entering values (sliders, textarea).
+
+**Sliders**
+
+Always pair every `<input type="range">` with a synchronized number input:
+
+```html
+<div class="field">
+  <label class="field__label">원화 비중</label>
+  <div style="display: flex; gap: var(--space-3); align-items: center">
+    <input type="range" min="0" max="100" value="65"
+           style="flex: 1; height: 6px" />          <!-- track height ≥ 6px -->
+    <input type="number" class="field__input" min="0" max="100" value="65"
+           style="width: 4.5rem; text-align: center" inputmode="numeric" />
+  </div>
+</div>
+```
+
+- On **mobile**, the number input is the reliable fallback when slider precision is too low.
+- On **tablet and PC**, sliders are accurate enough to use directly; the number input can be secondary.
+- The sum validation ("합계 100 %") must update on every `input` event, not on `change`.
+
+**News / reading content**
+
+| | Mobile | Tablet portrait | PC |
+|--|--------|----------------|-----|
+| News layout | 1 column, `.expandable` per article | 2 columns or `.expandable` | 2 columns side-by-side |
+| Expandable default | Collapsed | Expanded | Expanded |
+
+**Keyboard overlap**
+
+When a `<textarea>` receives focus on mobile or tablet, the on-screen keyboard can cover the sticky submit button. Use the `visualViewport` API to shift the pinned footer upward:
+
+```js
+visualViewport.addEventListener('resize', () => {
+  const offset = window.innerHeight - visualViewport.height;
+  footer.style.transform = `translateY(-${offset}px)`;
+});
+```
+
+This is outside BOOONG's scope and must be implemented in the consumer project.
+
+---
+
+### Game type C — Card selection games (e.g. 헌법 제정)
+
+The primary interaction is choosing one option from a set of labeled cards per policy category.
+
+**Card grid layout**
+
+| | Mobile | Tablet portrait | PC |
+|--|--------|----------------|-----|
+| Cards per row | 1 | 2 | 2–3 |
+| Show all sections | Stepper recommended | All visible | All visible |
+
+The stepper pattern on mobile (one policy section at a time, "다음" to advance) reduces scroll depth and prevents students from accidentally skipping a section. On tablet and PC, show all sections at once — the screen is tall enough to orient the user.
+
+Selected-state styling must go beyond a color change on the border. Fill the card background and add a visible checkmark or indicator:
+
+```css
+/* Consumer project CSS */
+.policy-card[aria-selected="true"] {
+  background: var(--color-primary-subtle);
+  border-color: var(--color-primary);
+  outline: 2px solid var(--color-primary);
+}
+```
+
+Use `aria-selected` on `role="option"` cards inside a `role="listbox"` container for correct screen-reader semantics.
+
+**Countdown timer urgency**
+
+The constitution game has a live timer. Apply the urgency state to the status bar only — do not flash the entire page or interrupt the student's input.
+
+---
+
+### Component quick-reference
+
+| Need | BOOONG component | Tier |
+|------|-----------------|------|
+| Persistent status bar | `.overlay-bar.overlay-bar--top` | All |
+| Pinned submit button | `.overlay-bar.overlay-bar--bottom` + `.btn--primary` | Mobile, tablet |
+| Phase-change notification | `.toast` | All |
+| Role / result reveal | `.alert-dialog` + `.alert-backdrop` | All |
+| Concept / keyword hint chips | `.chip.chip--gray` | All |
+| Collapsible reading content | `.expandable` | Mobile, tablet |
+| Mode / layer toggle on map | `.chip-toggle-group` | All |
+| Round icon action on map | `.btn--round-lg` | All |
+| Score / result card | `.summary` or `.callout` | All |
+| Awaiting-teacher state | `.empty-state` with `.empty-state--default` icon | All |
+| Skeleton while data loads | `.skel-card` | All |
+
+---
 
 ```html
 <link rel="stylesheet" href="https://yadoran-2025.github.io/booong-design-system/releases/v2.0.0/booong.css">

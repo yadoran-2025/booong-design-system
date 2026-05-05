@@ -1753,6 +1753,59 @@ em {
 .field__wrap-icon--error   { color: var(--color-error); }
 .field__wrap-icon--success { color: var(--color-success); }
 
+/* Range input (슬라이더) — 폼 컨텍스트 독립 사용 */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: var(--space-11); /* 44px 터치 타겟 확보 */
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  outline: none;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-border-strong, var(--border-strong));
+}
+input[type="range"]::-moz-range-track {
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--color-border-strong, var(--border-strong));
+  border: none;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-primary, var(--brand));
+  border: 2.5px solid var(--color-surface, var(--bg));
+  box-shadow: var(--shadow-sm);
+  margin-top: -8px; /* (22px thumb - 6px track) / 2 */
+  transition: var(--transition-transform);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-primary, var(--brand));
+  border: 2.5px solid var(--color-surface, var(--bg));
+  box-shadow: var(--shadow-sm);
+}
+input[type="range"]:focus-visible::-webkit-slider-thumb {
+  box-shadow: var(--shadow-focus-ring);
+}
+input[type="range"]:focus-visible::-moz-range-thumb {
+  box-shadow: var(--shadow-focus-ring);
+}
+input[type="range"]:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
 /* Chip */
 .chip {
   display: inline-flex;
@@ -2090,6 +2143,8 @@ em {
 .overlay-bar > input[type="range"] {
   flex: 1 1 0;
   min-width: 0;
+  height: auto;        /* 바 높이에 맞게 자동 조정 */
+  align-self: center;
 }
 
 
